@@ -49,7 +49,7 @@ router.get("/service", async (req, res) => {
   res.send(service);
 });
 
-router.get("/unit", async (req, res) => {
+router.post("/unit", async (req, res) => {
   let unit = await Unit.findAll({where: {service_id: req.body.service_id}});
   res.send(unit);
 });
