@@ -192,9 +192,6 @@ async function registerClient(message, user) {
             language = 5;
         }
 
-
-
-
         //save the client details
         return Client.findOrCreate({
             where: {
@@ -471,7 +468,11 @@ async function nextKDod() {
             sequelize.fn('MAX', sequelize.col('clinic_number'))
         ]
     })
-    return parseInt(client.clinic_number) + 1
+    if (client){
+        return parseInt(client.clinic_number) + 1
+    } else {
+        return "0001"
+    }
 }
 
 module.exports = registerClient;
