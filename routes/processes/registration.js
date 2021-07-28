@@ -40,32 +40,34 @@ async function registerClient(message, user) {
         };
 
     const reg = variables[0]; //CODE = REG : REGISTRATION 1
-    const upn = variables[1]; //UPN/CCC NO 2 // KDOD
+    const upn = nextKDod(); //UPN/CCC NO 2 // KDOD
     const serial_no = variables[2]; //SERIAL NO 3 //SERVICE NUMBER
     const f_name = variables[3]; //FIRST NAME 4
     const m_name = variables[4]; //MIDDLE NAME 5
     const l_name = variables[5]; //LAST NAME 6
     let dob = variables[6]; //DATE OF BIRTH 7
-    const gender = variables[8]; //GENDER 9
-    const marital = variables[9]; //MARITAL STATUS 10
-    let condition = variables[10]; //CONDITION 11
-    let enrollment_date = variables[11]; //ENROLLMENT DATE 12
-    let art_start_date = variables[12]; //ART START DATE 13
-    const primary_phone_no = variables[13]; //PHONE NUMBER 14
-    const alt_phone_no = variables[14]; //PHONE NUMBER 14
-    const trtmnt_buddy_phone_no = variables[15]; //PHONE NUMBER 14
-    let language = variables[16]; //LANGUAGE 16
-    let sms_enable = variables[17]; //SMS ENABLE 15
-    const motivation_enable = variables[18]; //MOTIVATIONAL ALERTS ENABLE 18
-    const messaging_time = variables[19]; //MESSAGING TIME 17
-    const client_status = variables[20]; //CLIENT STATUS 19
-    const transaction_type = variables[21]; //TRANSACTION TYPE 20
-    const grouping = variables[22]; //GROUPING
+    const gender = variables[7]; //GENDER 9
+    const marital = variables[8]; //MARITAL STATUS 10
+    let condition = variables[9]; //CONDITION 11
+    let enrollment_date = variables[10]; //ENROLLMENT DATE 12
+    let art_start_date = variables[11]; //ART START DATE 13
+    const primary_phone_no = variables[12]; //PHONE NUMBER 14
+    const alt_phone_no = variables[13]; //PHONE NUMBER 14
+    const email = variables[14]; //PHONE NUMBER 14
+    // const trtmnt_buddy_phone_no = variables[15]; //PHONE NUMBER 14
+    let language = variables[15]; //LANGUAGE 16
+    let sms_enable = variables[16]; //SMS ENABLE 15
+    const motivation_enable = variables[17]; //MOTIVATIONAL ALERTS ENABLE 18
+    const messaging_time = variables[18]; //MESSAGING TIME 17
+    const client_status = variables[19]; //CLIENT STATUS 19
+    const transaction_type = variables[20]; //TRANSACTION TYPE 20
+    const grouping = variables[21]; //GROUPING
+    const service_id = variables[22]; //unit id for
     const unit_id = variables[23]; //unit id for
 
     const mfl_code = user.facility_id;
     const clinic_id = user.clinic_id;
-    const partner_id = user.partner_id;
+    const partner_id = service_id;
     const user_id = user.id;
 
 
@@ -462,5 +464,14 @@ function cleanUpdateObject(obj) {
 
 }
 
+async function nextKDod() {
+    let client = await Client.findOne({
+        where: {},
+        attributes: [
+            sequelize.fn('MAX', sequelize.col('clinic_number'))
+        ]
+    })
+    return parseInt(client.clinic_number) + 1
+}
 
 module.exports = registerClient;
