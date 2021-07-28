@@ -213,7 +213,6 @@ async function registerClient(message, user) {
                 group_id: group_id,
                 phone_no: primary_phone_no,
                 alt_phone_no: alt_phone_no,
-                buddy_phone_no: trtmnt_buddy_phone_no,
                 language_id: language,
                 smsenable: sms_enable,
                 consent_date: consented,
@@ -231,7 +230,8 @@ async function registerClient(message, user) {
                 wellness_enable: motivational_enable,
                 file_no: serial_no,
                 clnd_dob: dob,
-                clinic_id: clinic_id
+                clinic_id: clinic_id,
+                email: email
             }
 
         })

@@ -214,7 +214,7 @@ const Client = sequelize.sequelize.define(
             type: Sequelize.DATEONLY,
             allowNull: true
         },
-        GODS_NUMBER: {
+        email: {
             type: Sequelize.TEXT,
             allowNull: true
         },
