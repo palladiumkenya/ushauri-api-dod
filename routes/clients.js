@@ -54,7 +54,7 @@ router.post("/unit", async (req, res) => {
   res.send(unit);
 });
 
-router.get("/partner/:id", async (req, res) => {
+router.get("/service/:id", async (req, res) => {
   let partner = await Partner.findOne({ where: { id: req.params.id }});
   res.send(partner);
 });
@@ -86,49 +86,17 @@ router.get("/:id", async (req, res) => {
   );
 });
 
+
 router.post("/", async (req, res) => {
   const { error } = validateClient(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  let client = await Client.findOne({
-    where: {
-      phone_no: req.body.phone_no
-    }
-  });
-
-  // return res.send(_.isEmpty(client));
-
-  if (!_.isEmpty(client))
-    return res
-      .status(400)
-      .send(`Phone number: ${req.body.phone_no} already exists in the system.`);
-
-  client = await Client.findOne({
-    where: {
-      email: req.body.email
-    }
-  });
-
-  if (!_.isEmpty(client))
-    return res
-      .status(400)
-      .send(`Email: ${req.body.email} already exists in the system.`);
-
-  client = req.body;
-  // const salt = await bcrypt.genSalt(10);
-  // client.password = await bcrypt.hash(client.phone_no, salt);
-
-  client.first_access = "Yes";
-  if ((client.access_level = "Admin")) {
-    client.partner_id = 100;
-    client.role_id = 1;
-    client.rcv_app_list = "No";
-  }
+  let client = req.body;
 
   Client.create(client)
     .then(function(model) {
-      message = "OK";
-      response = "Client successfully added.";
+      let message = "OK";
+      let response = "Client successfully added.";
 
       res.json({
         message: message,

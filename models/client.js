@@ -5,89 +5,387 @@ const {
     Appointment
 } = require("./appointment");
 const Client = sequelize.sequelize.define(
-    "tbl_client", {
+    'tbl_client', {
         id: {
+            autoIncrement: true,
             type: Sequelize.INTEGER,
-            primaryKey: true,
-            autoIncrement: true
-        },
-        group_id: Sequelize.INTEGER,
-        language_id: Sequelize.INTEGER,
-        clinic_number: {
-            type: Sequelize.NUMBER,
-            unique: true,
             allowNull: false,
-            len: 10
+            primaryKey: true,
+            comment: "Primary key "
         },
-        f_name: Sequelize.STRING,
-        m_name: Sequelize.STRING,
-        l_name: Sequelize.STRING,
-        dob: Sequelize.DATEONLY,
-        txt_frequency: Sequelize.NUMBER,
-        txt_time: Sequelize.NUMBER,
-        phone_no: Sequelize.STRING,
-        alt_phone_no: Sequelize.STRING,
-        alt_phone_no: Sequelize.STRING,
-        buddy_phone_no: Sequelize.STRING,
-        shared_no_name: Sequelize.STRING,
-        partner_id: Sequelize.INTEGER,
-        mfl_code: {
+        group_id: {
             type: Sequelize.INTEGER,
-            len: 5
+            allowNull: true,
+            comment: "Foreign key to table group",
+            references: {
+                model: 'tbl_groups',
+                key: 'id'
+            }
         },
-        status: Sequelize.ENUM(
-            "Active",
-            "Disabled",
-            "Deceased",
-            "Self Transfer",
-            "Transfer Out",
-            "LTFU"
-        ),
-        client_status: Sequelize.ENUM("ART", "Pre-Art", "On Care", "No Condition"),
-        gender: Sequelize.NUMBER,
-        marital: Sequelize.NUMBER,
-        smsenable: Sequelize.ENUM("Yes", "No"),
-        enrollment_date: Sequelize.DATEONLY,
-        art_date: {
-            type: Sequelize.DATEONLY,
-            defaultValue: null,
+        language_id: {
+            type: Sequelize.INTEGER,
+            allowNull: true,
+            defaultValue: 1,
+            comment: "Foreign key to table language",
+            references: {
+                model: 'tbl_language',
+                key: 'id'
+            }
+        },
+        facility_id: {
+            type: Sequelize.INTEGER,
             allowNull: true
         },
-        wellness_enable: Sequelize.ENUM("Yes", "No"),
-        motivational_enable: Sequelize.ENUM("Yes", "No"),
-        welcome_sent: Sequelize.ENUM("Yes", "No"),
-        client_type: Sequelize.ENUM("New", "Transfer"),
-        consent_date: Sequelize.DATEONLY,
-        physical_address: Sequelize.STRING,
-        transfer_date: Sequelize.DATEONLY,
-        entry_point: Sequelize.STRING,
-        gods_number: Sequelize.STRING,
-        date_deceased: Sequelize.DATEONLY,
-        patient_source: Sequelize.STRING,
-        prev_clinic: Sequelize.STRING,
-        ushauri_id: Sequelize.INTEGER,
-        db_source: Sequelize.STRING,
-        clnd_dob: Sequelize.DATEONLY,
-        clinic_id: Sequelize.INTEGER,
-        national_id: Sequelize.STRING,
-        file_no: Sequelize.STRING,
-        locator_county: Sequelize.STRING,
-        locator_sub_county: Sequelize.STRING,
-        locator_ward: Sequelize.STRING,
-        locator_location: Sequelize.STRING,
-        locator_village: Sequelize.STRING,
-        locator_location: Sequelize.STRING,
-        created_by: Sequelize.INTEGER,
-        updated_by: Sequelize.INTEGER,
-        hei_no: Sequelize.STRING
+        clinic_number: {
+            type: Sequelize.STRING(40),
+            allowNull: true,
+            comment: "used to form the  compound key for each client",
+            unique: "clinic_number"
+        },
+        db_source: {
+            type: Sequelize.STRING(15),
+            allowNull: true
+        },
+        ushauri_id: {
+            type: Sequelize.INTEGER,
+            allowNull: true
+        },
+        f_name: {
+            type: Sequelize.STRING(50),
+            allowNull: true
+        },
+        m_name: {
+            type: Sequelize.STRING(50),
+            allowNull: true
+        },
+        l_name: {
+            type: Sequelize.STRING(50),
+            allowNull: true
+        },
+        dob: {
+            type: Sequelize.STRING(15),
+            allowNull: true
+        },
+        client_status: {
+            type: Sequelize.ENUM('ART', 'On Care', 'Pre-ART', 'No Condition'),
+            allowNull: true,
+            defaultValue: "ART"
+        },
+        txt_frequency: {
+            type: Sequelize.INTEGER,
+            allowNull: true,
+            defaultValue: 168,
+            comment: "how frequenct should we check up on our client by default it's 168 ( whic is 1 week) "
+        },
+        txt_time: {
+            type: Sequelize.INTEGER,
+            allowNull: true,
+            comment: "foreign key to table time"
+        },
+        phone_no: {
+            type: Sequelize.STRING(50),
+            allowNull: true,
+            comment: "phone used to text the client"
+        },
+        alt_phone_no: {
+            type: Sequelize.STRING(50),
+            allowNull: true
+        },
+        shared_no_name: {
+            type: Sequelize.STRING(50),
+            allowNull: true
+        },
+        smsenable: {
+            type: Sequelize.ENUM('Yes', 'No'),
+            allowNull: true,
+            comment: "conent field for either client has accepted to receive messages "
+        },
+        created_at: {
+            type: Sequelize.DATE,
+            allowNull: false,
+            defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+        },
+        updated_at: {
+            type: Sequelize.DATE,
+            allowNull: true,
+            defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+        },
+        status: {
+            type: Sequelize.ENUM('Active', 'Dead', 'Disabled', 'Deceased', 'Self Transfer', 'Transfer Out', 'LTFU'),
+            allowNull: true,
+            defaultValue: "Active"
+        },
+        partner_id: {
+            type: Sequelize.INTEGER,
+            allowNull: true,
+            references: {
+                model: 'tbl_partner',
+                key: 'id'
+            }
+        },
+        mfl_code: {
+            type: Sequelize.INTEGER,
+            allowNull: true,
+            comment: "foreign key to the master facility table ",
+            references: {
+                model: 'tbl_master_facility',
+                key: 'code'
+            }
+        },
+        gender: {
+            type: Sequelize.INTEGER,
+            allowNull: true,
+            references: {
+                model: 'tbl_gender',
+                key: 'id'
+            }
+        },
+        marital: {
+            type: Sequelize.INTEGER,
+            allowNull: true,
+            references: {
+                model: 'tbl_marital_status',
+                key: 'id'
+            }
+        },
+        enrollment_date: {
+            type: Sequelize.DATE,
+            allowNull: true
+        },
+        art_date: {
+            type: Sequelize.DATE,
+            allowNull: true
+        },
+        wellness_enable: {
+            type: Sequelize.ENUM('Yes', 'No'),
+            allowNull: true
+        },
+        motivational_enable: {
+            type: Sequelize.ENUM('Yes', 'No', ''),
+            allowNull: true
+        },
+        client_type: {
+            type: Sequelize.ENUM('New', 'Transfer', 'Self Transfer', 'Transfer In', 'Transfer Out'),
+            allowNull: true
+        },
+        age_group: {
+            type: Sequelize.STRING(50),
+            allowNull: true
+        },
+        birth_date: {
+            type: Sequelize.DATEONLY,
+            allowNull: true
+        },
+        created_by: {
+            type: Sequelize.INTEGER,
+            allowNull: true
+        },
+        updated_by: {
+            type: Sequelize.INTEGER,
+            allowNull: true
+        },
+        prev_clinic: {
+            type: Sequelize.INTEGER,
+            allowNull: true
+        },
+        transfer_date: {
+            type: Sequelize.DATEONLY,
+            allowNull: true
+        },
+        entry_point: {
+            type: Sequelize.ENUM('Web', 'Mobile', 'EMR', 'ADT', 'IL', ''),
+            allowNull: true
+        },
+        welcome_sent: {
+            type: Sequelize.ENUM('Yes', 'No'),
+            allowNull: true,
+            defaultValue: "No"
+        },
+        stable: {
+            type: Sequelize.ENUM('Yes', 'No', 'Stable', 'Un Stable'),
+            allowNull: true,
+            defaultValue: "Yes"
+        },
+        physical_address: {
+            type: Sequelize.STRING(50),
+            allowNull: true
+        },
+        consent_date: {
+            type: Sequelize.DATEONLY,
+            allowNull: true
+        },
+        GODS_NUMBER: {
+            type: Sequelize.TEXT,
+            allowNull: true
+        },
+        DEATH_DATE: {
+            type: Sequelize.DATEONLY,
+            allowNull: true
+        },
+        PATIENT_SOURCE: {
+            type: Sequelize.STRING(50),
+            allowNull: true
+        },
+        SENDING_APPLICATION: {
+            type: Sequelize.STRING(50),
+            allowNull: true
+        },
+        clnd_dob: {
+            type: Sequelize.STRING(15),
+            allowNull: true
+        },
+        clinic_id: {
+            type: Sequelize.INTEGER,
+            allowNull: true,
+            defaultValue: 1,
+            comment: "foreign key for table clinic",
+            references: {
+                model: 'tbl_clinic',
+                key: 'id'
+            }
+        },
+        national_id: {
+            type: Sequelize.STRING(15),
+            allowNull: true
+        },
+        file_no: {
+            type: Sequelize.STRING(15),
+            allowNull: true
+        },
+        buddy_phone_no: {
+            type: Sequelize.STRING(15),
+            allowNull: true
+        },
+        date_deceased: {
+            type: Sequelize.DATEONLY,
+            allowNull: true
+        },
+        deleted_at: {
+            type: Sequelize.DATE,
+            allowNull: true
+        },
+        locator_county: {
+            type: Sequelize.STRING(50),
+            allowNull: true
+        },
+        locator_sub_county: {
+            type: Sequelize.STRING(50),
+            allowNull: true
+        },
+        locator_ward: {
+            type: Sequelize.STRING(50),
+            allowNull: true
+        },
+        locator_village: {
+            type: Sequelize.STRING(50),
+            allowNull: true
+        },
+        locator_location: {
+            type: Sequelize.STRING(50),
+            allowNull: true
+        },
+        hei_no: {
+            type: Sequelize.STRING(25),
+            allowNull: true,
+            references: {
+                model: 'tbl_pmtct',
+                key: 'hei_no'
+            }
+        }
     }, {
-        timestamps: true,
-        paranoid: true,
-        underscored: true,
-        freezeTableName: true,
-        tableName: "tbl_client"
+        sequelize,
+        tableName: 'tbl_client',
+        timestamps: false,
+        indexes: [
+            {
+                name: "PRIMARY",
+                unique: true,
+                using: "BTREE",
+                fields: [
+                    {name: "id"},
+                ]
+            },
+            {
+                name: "clinic_number",
+                unique: true,
+                using: "BTREE",
+                fields: [
+                    {name: "clinic_number"},
+                ]
+            },
+            {
+                name: "group_id",
+                using: "BTREE",
+                fields: [
+                    {name: "group_id"},
+                ]
+            },
+            {
+                name: "language_id",
+                using: "BTREE",
+                fields: [
+                    {name: "language_id"},
+                ]
+            },
+            {
+                name: "gender",
+                using: "BTREE",
+                fields: [
+                    {name: "gender"},
+                ]
+            },
+            {
+                name: "marital",
+                using: "BTREE",
+                fields: [
+                    {name: "marital"},
+                ]
+            },
+            {
+                name: "date_added",
+                using: "BTREE",
+                fields: [
+                    {name: "created_at"},
+                ]
+            },
+            {
+                name: "mfl_code",
+                using: "BTREE",
+                fields: [
+                    {name: "mfl_code"},
+                ]
+            },
+            {
+                name: "clinic_id",
+                using: "BTREE",
+                fields: [
+                    {name: "clinic_id"},
+                ]
+            },
+            {
+                name: "tbl_client_partner",
+                using: "BTREE",
+                fields: [
+                    {name: "partner_id"},
+                ]
+            },
+            {
+                name: "created_at",
+                using: "BTREE",
+                fields: [
+                    {name: "created_at"},
+                ]
+            },
+            {
+                name: "hei_no",
+                using: "BTREE",
+                fields: [
+                    {name: "hei_no"},
+                ]
+            },
+        ]
     }
-);
+    );
 
 function validateClient(client) {
     const schema = {
@@ -95,15 +393,6 @@ function validateClient(client) {
         mfl_code: Joi.number()
             .min(5)
             .max(5),
-        clinic_number: Joi.number()
-            .min(10)
-            .max(10),
-        file_no: Joi.string(),
-        locator_county: Joi.string(),
-        locator_sub_county: Joi.string(),
-        locator_ward: Joi.string(),
-        locator_village: Joi.string(),
-        locator_location: Joi.string(),
         gender: Joi.number().required(),
         marital: Joi.number().required(),
         client_status: Joi.string().required(),
@@ -126,11 +415,11 @@ function validateClient(client) {
         phone_no: Joi.string()
             .max(10)
             .min(10),
-        status: Joi.string().required(),
         clinic_id: Joi.number()
     };
 
     return Joi.validate(client, schema);
 }
+
 exports.Client = Client;
 exports.validateClient = validateClient;

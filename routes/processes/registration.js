@@ -40,13 +40,12 @@ async function registerClient(message, user) {
         };
 
     const reg = variables[0]; //CODE = REG : REGISTRATION 1
-    const upn = variables[1]; //UPN/CCC NO 2
-    const serial_no = variables[2]; //SERIAL NO 3
+    const upn = variables[1]; //UPN/CCC NO 2 // KDOD
+    const serial_no = variables[2]; //SERIAL NO 3 //SERVICE NUMBER
     const f_name = variables[3]; //FIRST NAME 4
     const m_name = variables[4]; //MIDDLE NAME 5
     const l_name = variables[5]; //LAST NAME 6
     let dob = variables[6]; //DATE OF BIRTH 7
-    const national_id = variables[7]; //NATIONAL ID OR PASSOPRT NO 8
     const gender = variables[8]; //GENDER 9
     const marital = variables[9]; //MARITAL STATUS 10
     let condition = variables[10]; //CONDITION 11
@@ -62,11 +61,7 @@ async function registerClient(message, user) {
     const client_status = variables[20]; //CLIENT STATUS 19
     const transaction_type = variables[21]; //TRANSACTION TYPE 20
     const grouping = variables[22]; //GROUPING
-    let locator_county = variables[23]; //LOCATOR COUNTY INFO
-    let locator_sub_county = variables[24]; //LOCATOR SUB COUNTY INFO
-    let locator_ward = variables[25]; //LOCATOR WARD INFO
-    let locator_village = variables[26]; // LOCATOR VILLAGE INFO
-    let locator_location = variables[27]; //LOCATOR LOCATION
+    const unit_id = variables[23]; //unit id for
 
     const mfl_code = user.facility_id;
     const clinic_id = user.clinic_id;
@@ -221,6 +216,7 @@ async function registerClient(message, user) {
                 smsenable: sms_enable,
                 consent_date: consented,
                 partner_id: partner_id,
+                unit_id: unit_id,
                 status: status,
                 art_date: art_start_date,
                 created_at: b,
@@ -231,15 +227,9 @@ async function registerClient(message, user) {
                 txt_time: messaging_time,
                 motivational_enable: motivational_enable,
                 wellness_enable: motivational_enable,
-                national_id: national_id,
                 file_no: serial_no,
                 clnd_dob: dob,
-                clinic_id: clinic_id,
-                locator_county: locator_county,
-                locator_sub_county: locator_sub_county,
-                locator_ward: locator_ward,
-                locator_village: locator_village,
-                locator_location: locator_location
+                clinic_id: clinic_id
             }
 
         })
@@ -276,8 +266,7 @@ async function registerClient(message, user) {
                                 phone = alt_phone_no;
                             } else if (
                                 primary_phone_no == null &&
-                                alt_phone_no == null &&
-                                buddy_phone_no != null
+                                alt_phone_no == null
                             ) {
                                 phone = buddy_phone_no;
                             }
