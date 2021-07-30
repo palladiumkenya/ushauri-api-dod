@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 // const bcrypt = require("bcrypt");
 const _ = require("lodash");
+const {Rank} = require("../models/tbl_rank");
 const {Partner} = require("../models/partner");
 const {Unit} = require("../models/unit");
 
@@ -52,6 +53,11 @@ router.get("/service", async (req, res) => {
 router.post("/unit", async (req, res) => {
   let unit = await Unit.findAll({where: {service_id: req.body.service_id}});
   res.send(unit);
+});
+
+router.get("/rank", async (req, res) => {
+  let ranks = await Rank.findAll({where: {status: "Active"}});
+  res.send(ranks);
 });
 
 router.get("/service/:id", async (req, res) => {
