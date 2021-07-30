@@ -9,7 +9,9 @@ const {
     Appointment
 } = require("../../models/appointment");
 const moment = require("moment");
+const sequelize = require("../../db_config");
 const base64 = require("base64util");
+const {Sequelize} = require("sequelize");
 const {
     Sender
 } = require("../../models/africastalking");
@@ -33,14 +35,14 @@ async function registerClient(message, user) {
 
     const variables = decoded_message.split("*");
     console.log(variables.length);
-    if (variables.length != 28)
+    if (variables.length != 24)
         return {
             code: 400,
             message: variables.length
         };
 
     const reg = variables[0]; //CODE = REG : REGISTRATION 1
-    const upn = nextKDod(); //UPN/CCC NO 2 // KDOD
+    let upn = variables[1]; //UPN/CCC NO 2 // KDOD
     const serial_no = variables[2]; //SERIAL NO 3 //SERVICE NUMBER
     const f_name = variables[3]; //FIRST NAME 4
     const m_name = variables[4]; //MIDDLE NAME 5
@@ -65,11 +67,12 @@ async function registerClient(message, user) {
     const service_id = variables[22]; //unit id for
     const unit_id = variables[23]; //unit id for
 
+    console.log(variables)
+
     const mfl_code = user.facility_id;
     const clinic_id = user.clinic_id;
     const partner_id = service_id;
     const user_id = user.id;
-
 
 
     let today = moment(new Date().toDateString()).format("YYYY-MM-DD");
@@ -152,9 +155,22 @@ async function registerClient(message, user) {
     }
 
 
-
-
     if (transaction_type == 1 || transaction_type == 3) {
+        if (!upn.match(/.{1,5}(\s|$)/g)[1]) {
+            upn = await Client.findOne({
+                attributes: [
+                    [Sequelize.fn('MAX', Sequelize.col('clinic_number')), 'clinic_number']
+                ],
+            }).then((client) => {
+                console.log(parseInt(client.dataValues.clinic_number) + 1)
+                if (client) {
+                    return parseInt(client.dataValues.clinic_number) + 1
+                } else {
+                    return "0001"
+                }
+            })
+        }
+
         //New Registration or Transfer IN for a client not existing in the system
 
         const client = await Client.findOne({
@@ -233,7 +249,7 @@ async function registerClient(message, user) {
 
         })
 
-        .then(async([client, created]) => {
+            .then(async ([client, created]) => {
                 if (created) {
 
                     if (sms_enable == "Yes" && language != 5) {
@@ -271,32 +287,9 @@ async function registerClient(message, user) {
                             }
                             Sender(phone, new_message);
 
-
                         });
 
                     }
-
-
-                    let tracers = await User.findAll({
-                        where: {
-                            facility_id: user.facility_id,
-                            clinic_id: client.clinic_id,
-                            role_id: 12
-                        }
-                    });
-
-                    if(tracers.length){
-                        const random = Math.floor(Math.random() * tracers.length);
-                        let tracer = tracers[random]
-                        console.log(tracer.id, client.id, user.facility_id, user.clinic_id)
-                        await TracerClients.create({
-                            tracer_id: tracer.id,
-                            client_id: client.id
-                        });
-
-                    }
-
-
                     return {
                         code: 200,
                         message: `Client ${upn} was created successfully`
@@ -374,11 +367,11 @@ async function registerClient(message, user) {
             }
         }
         return Client.update(clean_object, {
-                where: {
-                    clinic_number: upn
-                }
-            })
-            .then(async([updated, client]) => {
+            where: {
+                clinic_number: upn
+            }
+        })
+            .then(async ([updated, client]) => {
 
                 client = await Client.findOne({
                     where: {
@@ -399,16 +392,17 @@ async function registerClient(message, user) {
                             })
                             for (let app of get_active_app) {
                                 Appointment.update({
-                                        active_app: "0",
-                                        updated_at: today,
-                                        updated_by: user.id
-                                    }, {
-                                        returning: true,
-                                        where: {
-                                            id: app.id
-                                        }
+                                    active_app: "0",
+                                    updated_at: today,
+                                    updated_by: user.id
+                                }, {
+                                    returning: true,
+                                    where: {
+                                        id: app.id
+                                    }
+                                })
+                                    .then(() => {
                                     })
-                                    .then(() => {})
                                     .catch(e => {
                                         console.log(e.message)
                                     });
@@ -462,17 +456,19 @@ function cleanUpdateObject(obj) {
 }
 
 async function nextKDod() {
-    let client = await Client.findOne({
-        where: {},
+    await Client.findOne({
         attributes: [
-            sequelize.fn('MAX', sequelize.col('clinic_number'))
-        ]
+            [Sequelize.fn('MAX', Sequelize.col('clinic_number')), 'clinic_number']
+        ],
+    }).then((client) => {
+        console.log(parseInt(client.dataValues.clinic_number) + 1)
+        if (client) {
+            return parseInt(client.dataValues.clinic_number) + 1
+        } else {
+            return "0001"
+        }
     })
-    if (client){
-        return parseInt(client.clinic_number) + 1
-    } else {
-        return "0001"
-    }
+
 }
 
 module.exports = registerClient;

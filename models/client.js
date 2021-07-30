@@ -264,26 +264,6 @@ const Client = sequelize.sequelize.define(
             type: Sequelize.DATE,
             allowNull: true
         },
-        locator_county: {
-            type: Sequelize.STRING(50),
-            allowNull: true
-        },
-        locator_sub_county: {
-            type: Sequelize.STRING(50),
-            allowNull: true
-        },
-        locator_ward: {
-            type: Sequelize.STRING(50),
-            allowNull: true
-        },
-        locator_village: {
-            type: Sequelize.STRING(50),
-            allowNull: true
-        },
-        locator_location: {
-            type: Sequelize.STRING(50),
-            allowNull: true
-        },
         hei_no: {
             type: Sequelize.STRING(25),
             allowNull: true,
