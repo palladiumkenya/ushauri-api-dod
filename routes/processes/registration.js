@@ -35,11 +35,12 @@ async function registerClient(message, user) {
 
     const variables = decoded_message.split("*");
     console.log(variables.length);
-    if (variables.length != 24)
-        return {
-            code: 400,
-            message: variables.length
-        };
+    
+    // if (variables.length != 24)
+    //     return {
+    //         code: 400,
+    //         message: variables.length
+    //     };
 
     const reg = variables[0]; //CODE = REG : REGISTRATION 1
     let upn = variables[1]; //UPN/CCC NO 2 // KDOD
