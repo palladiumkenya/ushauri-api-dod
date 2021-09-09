@@ -50,8 +50,8 @@ router.get("/service", async (req, res) => {
   res.send(service);
 });
 
-router.post("/unit", async (req, res) => {
-  let unit = await Unit.findAll({where: {service_id: req.body.service_id}});
+router.get("/unit/:id", async (req, res) => {
+  let unit = await Unit.findAll({where: {service_id: req.params.id}});
   res.send(unit);
 });
 
