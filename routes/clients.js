@@ -115,7 +115,6 @@ router.post("/", async (req, res) => {
             "l_name",
             "dob",
             "phone_no",
-            "email",
             "partner_id",
             "facility_id",
             "status",
