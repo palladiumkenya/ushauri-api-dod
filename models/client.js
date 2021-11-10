@@ -271,7 +271,15 @@ const Client = sequelize.sequelize.define(
                 model: 'tbl_pmtct',
                 key: 'hei_no'
             }
-        }
+        },
+        unit_id: {
+            type: Sequelize.INTEGER,
+            allowNull: true
+        },
+        rank_id: {
+            type: Sequelize.INTEGER,
+            allowNull: true
+        },
     }, {
         sequelize,
         tableName: 'tbl_client',
