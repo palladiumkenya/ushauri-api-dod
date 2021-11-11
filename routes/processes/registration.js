@@ -67,6 +67,7 @@ async function registerClient(message, user) {
     const grouping = variables[21]; //GROUPING
     const service_id = variables[22]; //unit id for
     const unit_id = variables[23]; //unit id for
+    const rank_id = variables[24]; //unit id for
 
     console.log(variables)
 
@@ -338,7 +339,9 @@ async function registerClient(message, user) {
             locator_sub_county: locator_sub_county,
             locator_ward: locator_ward,
             locator_village: locator_village,
-            locator_location: locator_location
+            locator_location: locator_location,
+            unit_id: unit_id,
+            rank_id: rank_id
         };
 
         let clean_object = await cleanUpdateObject(update_array);
