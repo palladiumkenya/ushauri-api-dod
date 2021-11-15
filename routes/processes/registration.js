@@ -202,7 +202,7 @@ async function registerClient(message, user) {
 
         const client = await Client.findOne({
             where: {
-                clinic_number: new_upn
+                clinic_number: upn
             }
         });
         if (client)
