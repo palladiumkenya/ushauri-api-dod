@@ -172,8 +172,7 @@ async function registerClient(message, user) {
         //         }
         //     })
         // }
-
-
+if(upn.length !== 5) {
         if (!upn.match(/.{1,5}(\s|$)/g)[1]) {
             upn = await Client.findOne({
                 attributes: [
@@ -197,7 +196,7 @@ async function registerClient(message, user) {
                   }
             })
         }
-
+}
         //New Registration or Transfer IN for a client not existing in the system
 
         const client = await Client.findOne({
