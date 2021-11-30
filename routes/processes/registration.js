@@ -172,31 +172,33 @@ async function registerClient(message, user) {
         //         }
         //     })
         // }
-if(upn.length !== 5) {
-        if (!upn.match(/.{1,5}(\s|$)/g)[1]) {
-            upn = await Client.findOne({
-                attributes: [
-                    [Sequelize.fn('MAX', Sequelize.col('clinic_number')), 'clinic_number']
-                ],
-            }).then((client) => {
-                let new_upn = (client.dataValues.clinic_number);
-        
-                if (new_upn.length < 5 ) {
-                    console.log("0" + (parseInt(new_upn) + 1)) ;
-        
-                    return ("0" + (parseInt(new_upn) + 1));
-        
-                  } else if(new_upn.length >= 5) {
-                    console.log(parseInt(new_upn) + 1) ;
-        
-                    return (parseInt(new_upn) + 1);
-                     
-                  } else {
-                    console.log("0001")
-                  }
-            })
+
+        if(upn.length !== 5) {
+            if (!upn.match(/.{1,5}(\s|$)/g)[1]) {
+                upn = await Client.findOne({
+                    attributes: [
+                        [Sequelize.fn('MAX', Sequelize.col('clinic_number')), 'clinic_number']
+                    ],
+                }).then((client) => {
+                    let new_upn = (client.dataValues.clinic_number);
+            
+                    if (new_upn.length < 5 ) {
+                        console.log("0" + (parseInt(new_upn) + 1)) ;
+            
+                        return ("0" + (parseInt(new_upn) + 1));
+            
+                    } else if(new_upn.length >= 5) {
+                        console.log(parseInt(new_upn) + 1) ;
+            
+                        return (parseInt(new_upn) + 1);
+                        
+                    } else {
+                        console.log("0001")
+                    }
+                })
+            }
         }
-}
+
         //New Registration or Transfer IN for a client not existing in the system
 
         const client = await Client.findOne({
