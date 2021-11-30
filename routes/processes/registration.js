@@ -359,7 +359,6 @@ async function registerClient(message, user) {
             txt_time: messaging_time,
             motivational_enable: motivational_enable,
             wellness_enable: motivational_enable,
-            national_id: national_id,
             file_no: serial_no,
             locator_county: locator_county,
             locator_sub_county: locator_sub_county,
