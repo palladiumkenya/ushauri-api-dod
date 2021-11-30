@@ -56,18 +56,18 @@ async function registerClient(message, user) {
     let art_start_date = variables[11]; //ART START DATE 13
     const primary_phone_no = variables[12]; //PHONE NUMBER 14
     const alt_phone_no = variables[13]; //PHONE NUMBER 14
-    const email = variables[14]; //PHONE NUMBER 14
-    // const trtmnt_buddy_phone_no = variables[15]; //PHONE NUMBER 14
-    let language = variables[15]; //LANGUAGE 16
-    let sms_enable = variables[16]; //SMS ENABLE 15
-    const motivation_enable = variables[17]; //MOTIVATIONAL ALERTS ENABLE 18
-    const messaging_time = variables[18]; //MESSAGING TIME 17
-    const client_status = variables[19]; //CLIENT STATUS 19
-    const transaction_type = variables[20]; //TRANSACTION TYPE 20
-    const grouping = variables[21]; //GROUPING
-    const service_id = variables[22]; //unit id for
-    const unit_id = variables[23]; //unit id for
-    const rank_id = variables[24]; //unit id for
+    const trtmnt_buddy_phone_no = variables[14]; //PHONE NUMBER 14
+    const email = variables[15]; //PHONE NUMBER 15
+    let language = variables[16]; //LANGUAGE 16
+    let sms_enable = variables[17]; //SMS ENABLE 17
+    const motivation_enable = variables[18]; //MOTIVATIONAL ALERTS ENABLE 18
+    const messaging_time = variables[19]; //MESSAGING TIME 19
+    const client_status = variables[20]; //CLIENT STATUS 20
+    const transaction_type = variables[21]; //TRANSACTION TYPE 21
+    const grouping = variables[22]; //GROUPING 22
+    const service_id = variables[23]; //service id 23
+    const unit_id = variables[24]; //unit id 24
+    const rank_id = variables[25]; //rank id 25
 
     console.log(variables)
 
