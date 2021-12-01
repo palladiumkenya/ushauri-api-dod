@@ -34,6 +34,9 @@ async function registerClient(message, user) {
 
 
     const variables = decoded_message.split("*");
+
+    // return variables;
+
     console.log(variables.length);
 
     // if (variables.length != 24)
@@ -187,7 +190,21 @@ async function registerClient(message, user) {
             
                         return ("0" + (parseInt(new_upn) + 1));
             
-                    } else if(new_upn.length >= 5) {
+                    } else {
+                        console.log("0001")
+                    }
+                })
+            }
+        } else {
+            if (!upn.match(/.{1,5}(\s|$)/g)[1]) {
+                upn = await Client.findOne({
+                    attributes: [
+                        [Sequelize.fn('MAX', Sequelize.col('clinic_number')), 'clinic_number']
+                    ],
+                }).then((client) => {
+                    let new_upn = (client.dataValues.clinic_number);
+            
+                    if(new_upn.length >= 5) {
                         console.log(parseInt(new_upn) + 1) ;
             
                         return (parseInt(new_upn) + 1);
@@ -197,6 +214,7 @@ async function registerClient(message, user) {
                     }
                 })
             }
+
         }
 
         //New Registration or Transfer IN for a client not existing in the system
@@ -360,11 +378,11 @@ async function registerClient(message, user) {
             motivational_enable: motivational_enable,
             wellness_enable: motivational_enable,
             file_no: serial_no,
-            locator_county: locator_county,
-            locator_sub_county: locator_sub_county,
-            locator_ward: locator_ward,
-            locator_village: locator_village,
-            locator_location: locator_location,
+            // locator_county: locator_county,
+            // locator_sub_county: locator_sub_county,
+            // locator_ward: locator_ward,
+            // locator_village: locator_village,
+            // locator_location: locator_location,
             unit_id: unit_id,
             rank_id: rank_id
         };
