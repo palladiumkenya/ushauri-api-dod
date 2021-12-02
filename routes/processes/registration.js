@@ -82,10 +82,10 @@ async function registerClient(message, user) {
 
     let today = moment(new Date().toDateString()).format("YYYY-MM-DD");
 
-    if (!upn) return {
-        code: 400,
-        message: "Clinic Number not provided"
-    };
+    // if (!upn) return {
+    //     code: 400,
+    //     message: "Clinic Number not provided"
+    // };
     if (!f_name) return {
         code: 400,
         message: "First Name not provided"
@@ -176,7 +176,7 @@ async function registerClient(message, user) {
         //     })
         // }
 
-        if(upn.length !== 5) {
+        if(upn.length !== 5 || upn == '' || upn == null || upn == undefined ) {
             if (!upn.match(/.{1,5}(\s|$)/g)[1]) {
                 upn = await Client.findOne({
                     attributes: [
