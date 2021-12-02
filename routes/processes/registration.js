@@ -392,7 +392,7 @@ async function registerClient(message, user) {
         //save the client details
         let client_check = await Client.findOne({
             where: {
-                clinic_number: upn
+                clinic_number: upn.slice(5)
             }
         });
         if (clean_object.dob) {
@@ -415,14 +415,14 @@ async function registerClient(message, user) {
         }
         return Client.update(clean_object, {
             where: {
-                clinic_number: upn
+                clinic_number: upn.slice(5)
             }
         })
             .then(async ([updated, client]) => {
 
                 client = await Client.findOne({
                     where: {
-                        clinic_number: upn
+                        clinic_number: upn.slice(5)
                     }
                 });
                 if (updated) {
@@ -460,12 +460,12 @@ async function registerClient(message, user) {
 
                     return {
                         code: 200,
-                        message: `Client ${upn} was updated successfully`
+                        message: `Client ${upn.slice(5)} was updated successfully`
                     };
                 } else {
                     return {
                         code: 400,
-                        message: `Could not update client ${upn}`
+                        message: `Could not update client ${upn.slice(5)}`
                     };
                 }
             })

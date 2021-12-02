@@ -13,7 +13,7 @@ const db_server = process.env.DB_SERVER;
 
 const sequelize = new Sequelize(database, username, password, {
   host: db_server,
-  port: 3306,
+  port: 3307,
   dialect: "mysql",
     dialectOptions: {
       connectTimeout: 4000000,
