@@ -38,7 +38,7 @@ moment.createFromInputFallback = function(config) {
 
 router.post('/check/enrollment/duration', async(req, res) => {
     let phone_no = req.body.phone_no
-    let clinic_number = req.body.clinic_number
+    let clinic_number = req.body.clinic_number.slice(5)
 
     let check_user = await User.findOne({
         where: {
