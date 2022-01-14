@@ -39,7 +39,7 @@ async function transitClient(message, user) {
             clinic_number: ccc_number
         }
     });
-    if (!client) client.id = "";
+    if (!client) client = {id: ""};
     return Transit.create({
             ccc_number: ccc_number,
             transit_facility: user.facility_id,
