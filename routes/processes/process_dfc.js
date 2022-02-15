@@ -1417,7 +1417,7 @@ router.post('/client/not/dcm', async(req, res) => {
     //on DCM process
 router.post('/client/dcm/create', async(req, res) => {
     let phone_no = req.body.phone_no
-    let clinic_number = req.body.clinic_number
+    let clinic_number = req.body.clinic_number.slice(5)
     let refill_date = req.body.refill_date
     let review_date = req.body.review_date
     let facility_based = req.body.facility

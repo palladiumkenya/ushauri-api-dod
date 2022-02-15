@@ -34,6 +34,9 @@ async function registerClient(message, user) {
 
 
     const variables = decoded_message.split("*");
+
+    // return variables;
+
     console.log(variables.length);
 
     // if (variables.length != 24)
@@ -79,10 +82,10 @@ async function registerClient(message, user) {
 
     let today = moment(new Date().toDateString()).format("YYYY-MM-DD");
 
-    if (!upn) return {
-        code: 400,
-        message: "Clinic Number not provided"
-    };
+    // if (!upn) return {
+    //     code: 400,
+    //     message: "Clinic Number not provided"
+    // };
     if (!f_name) return {
         code: 400,
         message: "First Name not provided"
@@ -173,7 +176,7 @@ async function registerClient(message, user) {
         //     })
         // }
 
-        if(upn.length !== 5) {
+        if(upn.length !== 5 || upn == '' || upn == null || upn == undefined ) {
             if (!upn.match(/.{1,5}(\s|$)/g)[1]) {
                 upn = await Client.findOne({
                     attributes: [
@@ -187,7 +190,21 @@ async function registerClient(message, user) {
             
                         return ("0" + (parseInt(new_upn) + 1));
             
-                    } else if(new_upn.length >= 5) {
+                    } else {
+                        console.log("0001")
+                    }
+                })
+            }
+        } else {
+            if (!upn.match(/.{1,5}(\s|$)/g)[1]) {
+                upn = await Client.findOne({
+                    attributes: [
+                        [Sequelize.fn('MAX', Sequelize.col('clinic_number')), 'clinic_number']
+                    ],
+                }).then((client) => {
+                    let new_upn = (client.dataValues.clinic_number);
+            
+                    if(new_upn.length >= 5) {
                         console.log(parseInt(new_upn) + 1) ;
             
                         return (parseInt(new_upn) + 1);
@@ -197,6 +214,7 @@ async function registerClient(message, user) {
                     }
                 })
             }
+
         }
 
         //New Registration or Transfer IN for a client not existing in the system
@@ -360,11 +378,11 @@ async function registerClient(message, user) {
             motivational_enable: motivational_enable,
             wellness_enable: motivational_enable,
             file_no: serial_no,
-            locator_county: locator_county,
-            locator_sub_county: locator_sub_county,
-            locator_ward: locator_ward,
-            locator_village: locator_village,
-            locator_location: locator_location,
+            // locator_county: locator_county,
+            // locator_sub_county: locator_sub_county,
+            // locator_ward: locator_ward,
+            // locator_village: locator_village,
+            // locator_location: locator_location,
             unit_id: unit_id,
             rank_id: rank_id
         };
@@ -374,7 +392,7 @@ async function registerClient(message, user) {
         //save the client details
         let client_check = await Client.findOne({
             where: {
-                clinic_number: upn
+                clinic_number: upn.slice(5)
             }
         });
         if (clean_object.dob) {
@@ -397,14 +415,14 @@ async function registerClient(message, user) {
         }
         return Client.update(clean_object, {
             where: {
-                clinic_number: upn
+                clinic_number: upn.slice(5)
             }
         })
             .then(async ([updated, client]) => {
 
                 client = await Client.findOne({
                     where: {
-                        clinic_number: upn
+                        clinic_number: upn.slice(5)
                     }
                 });
                 if (updated) {
@@ -442,12 +460,12 @@ async function registerClient(message, user) {
 
                     return {
                         code: 200,
-                        message: `Client ${upn} was updated successfully`
+                        message: `Client ${upn.slice(5)} was updated successfully`
                     };
                 } else {
                     return {
                         code: 400,
-                        message: `Could not update client ${upn}`
+                        message: `Could not update client ${upn.slice(5)}`
                     };
                 }
             })
