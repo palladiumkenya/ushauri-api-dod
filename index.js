@@ -17,6 +17,7 @@ const dfc = require("./routes/processes/process_dfc");
 const pmtct = require("./routes/processes/process_pmtct");
 const editApps = require("./routes/processes/edit_appointment");
 const terms = require("./routes/terms");
+const kdod_new= require("./routes/kdod");
 // app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -35,6 +36,7 @@ app.use("/api/process_dfc", dfc);
 app.use("/api/process_pmtct", pmtct)
 app.use("/api/edit_appointment", editApps)
 app.use("/terms", terms)
+app.use("/kdod", kdod_new);
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () =>
     console.log(`Ushauri Web App started. Listening on Port: ${PORT}`)
