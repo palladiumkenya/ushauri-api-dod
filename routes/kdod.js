@@ -4,7 +4,7 @@ const router = express.Router();
 // const bcrypt = require("bcrypt");
 const _ = require("lodash");
 const { myKdod } = require("../models/kdod");
-const { User } = require("../../models/user");
+const { User } = require("../models/user");
 
 //Fetch Next Available KDOD Number
 router.get("/:id", async (req, res) => {
