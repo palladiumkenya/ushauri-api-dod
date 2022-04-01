@@ -8,7 +8,7 @@ const { myKdod }  = require("../models/kdod");
 //Fetch Next Available KDOD Number
 router.get("/:id", async (req, res) => {
     let userid=req.params.id;
-    let Kdod = await myKdod.sequelize.query("SELECT fn_nextKdod('"+ userid+"') as kdod_num, id");
+    let Kdod = await myKdod.sequelize.query("SELECT fn_nextKdod('"+ userid+"') as kdod_num");
     res.json(Kdod[0]);});
 
 //Fetch UnAssigned KDOD Number
