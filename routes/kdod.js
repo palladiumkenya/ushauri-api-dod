@@ -13,9 +13,9 @@ router.get("/:id", async (req, res) => {
 
 //Fetch UnAssigned KDOD Number
 router.get("/pkdod/", async (req, res) => {
-   // let userid=req.params.id;
-    let Kdod = await myKdod.findOne({where: {c_status: '1'}});
-    res.json(Kdod);   //requested_by:userid
+    let userid=req.params.id;
+    let Kdod = await myKdod.findOne({where: {c_status: '1', requested_by:userid}});
+    res.json(Kdod);
   });
 
 
