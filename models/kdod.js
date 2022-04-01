@@ -16,6 +16,11 @@ const myKdod = sequelize.sequelize.define(
           requested_by: {
             type: Sequelize.INTEGER,
             allowNull: false,
+            comment: "Foreign key to table user",
+            references: {
+                model: 'tbl_users',
+                key: 'facility_id'
+            }
            },
           assigned_date: {
             type: Sequelize.DATE,
@@ -25,7 +30,7 @@ const myKdod = sequelize.sequelize.define(
           c_status: {
             type: Sequelize.CHAR(2),
             allowNull: false
-          },       
+          },
         kdod_num: {
             type: Sequelize.INTEGER,
             allowNull: true
@@ -37,7 +42,7 @@ const myKdod = sequelize.sequelize.define(
         freezeTableName: true,
         tableName: "tbl_kdod_number"
     }
-  
+
 )
 
 
