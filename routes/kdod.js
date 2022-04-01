@@ -4,11 +4,10 @@ const router = express.Router();
 // const bcrypt = require("bcrypt");
 const _ = require("lodash");
 const { myKdod } = require("../models/kdod");
-const { User } = require("../models/user");
 
 //Fetch Next Available KDOD Number
 router.get("/:id", async (req, res) => {
-	let userid = await User.findOne({ where: { facility_id: req.params.id } });
+	let userid = req.params.id;
 	let Kdod = await myKdod.sequelize.query(
 		"SELECT fn_nextKdod('" + userid + "') as kdod_num"
 	);
@@ -17,7 +16,7 @@ router.get("/:id", async (req, res) => {
 
 //Fetch UnAssigned KDOD Number
 router.get("/pkdod/:id", async (req, res) => {
-	let userid = await User.findOne({ where: { facility_id: req.params.id } });
+	let userid = req.params.id;
 	let Kdod = await myKdod.findOne({
 		where: { c_status: "1", requested_by: userid }
 	});
