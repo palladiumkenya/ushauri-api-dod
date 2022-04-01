@@ -8,16 +8,14 @@ const { myKdod }  = require("../models/kdod");
 //Fetch Next Available KDOD Number
 router.get("/:id", async (req, res) => {
     let userid=req.params.id;
-    let Kdod = await myKdod.sequelize.query("SELECT fn_nextKdod('"+ userid+"') as kdod_num");
-    res.json(Kdod[0]);
-});
-
+    let Kdod = await myKdod.sequelize.query("SELECT fn_nextKdod('"+ userid+"') as kdod_num, id");
+    res.json(Kdod[0]);});
 
 //Fetch UnAssigned KDOD Number
-router.get("/pkdod/:id", async (req, res) => {
-    let userid=req.params.id;
-    let Kdod = await myKdod.findOne({where: {c_status: '1', requested_by:userid}});
-    res.json(Kdod);
+router.get("/pkdod/", async (req, res) => {
+   // let userid=req.params.id;
+    let Kdod = await myKdod.findOne({where: {c_status: '1'}});
+    res.json(Kdod);   //requested_by:userid
   });
 
 
