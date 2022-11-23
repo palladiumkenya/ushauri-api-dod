@@ -176,46 +176,46 @@ async function registerClient(message, user) {
         //     })
         // }
 
-        if(upn.length !== 5 || upn == '' || upn == null || upn == undefined ) {
-            if (!upn.match(/.{1,5}(\s|$)/g)[1]) {
-                upn = await Client.findOne({
-                    attributes: [
-                        [Sequelize.fn('MAX', Sequelize.col('clinic_number')), 'clinic_number']
-                    ],
-                }).then((client) => {
-                    let new_upn = (client.dataValues.clinic_number);
+       // if(upn.length !== 5 || upn == '' || upn == null || upn == undefined ) {
+         //   if (!upn.match(/.{1,5}(\s|$)/g)[1]) {
+           //     upn = await Client.findOne({
+             //       attributes: [
+               //         [Sequelize.fn('MAX', Sequelize.col('clinic_number')), 'clinic_number']
+                 //   ],
+               // }).then((client) => {
+                 //   let new_upn = (client.dataValues.clinic_number);
             
-                    if (new_upn.length < 5 ) {
-                        console.log("0" + (parseInt(new_upn) + 1)) ;
+                   // if (new_upn.length < 5 ) {
+                     //   console.log("0" + (parseInt(new_upn) + 1)) ;
             
-                        return ("0" + (parseInt(new_upn) + 1));
+                       // return ("0" + (parseInt(new_upn) + 1));
             
-                    } else {
-                        console.log("0001")
-                    }
-                })
-            }
-        } else {
-            if (!upn.match(/.{1,5}(\s|$)/g)[1]) {
-                upn = await Client.findOne({
-                    attributes: [
-                        [Sequelize.fn('MAX', Sequelize.col('clinic_number')), 'clinic_number']
-                    ],
-                }).then((client) => {
-                    let new_upn = (client.dataValues.clinic_number);
+                   // } else {
+                     //   console.log("0001")
+                    //}
+               // })
+           // }
+       // } else {
+         //   if (!upn.match(/.{1,5}(\s|$)/g)[1]) {
+           //     upn = await Client.findOne({
+             //       attributes: [
+               //         [Sequelize.fn('MAX', Sequelize.col('clinic_number')), 'clinic_number']
+                 //   ],
+               // }).then((client) => {
+                 //   let new_upn = (client.dataValues.clinic_number);
             
-                    if(new_upn.length >= 5) {
-                        console.log(parseInt(new_upn) + 1) ;
+                   // if(new_upn.length >= 5) {
+                     //   console.log(parseInt(new_upn) + 1) ;
             
-                        return (parseInt(new_upn) + 1);
+                       // return (parseInt(new_upn) + 1);
                         
-                    } else {
-                        console.log("0001")
-                    }
-                })
-            }
+                   // } else {
+                     //   console.log("0001")
+                   // }
+               // })
+           // }
 
-        }
+       // }
 
         //New Registration or Transfer IN for a client not existing in the system
 
@@ -502,20 +502,20 @@ function cleanUpdateObject(obj) {
 
 }
 
-async function nextKDod() {
-    await Client.findOne({
-        attributes: [
-            [Sequelize.fn('MAX', Sequelize.col('clinic_number')), 'clinic_number']
-        ],
-    }).then((client) => {
-        console.log(parseInt(client.dataValues.clinic_number) + 1)
-        if (client) {
-            return parseInt(client.dataValues.clinic_number) + 1
-        } else {
-            return "0001"
-        }
-    })
+//async function nextKDod() {
+  //  await Client.findOne({
+    //    attributes: [
+      //      [Sequelize.fn('MAX', Sequelize.col('clinic_number')), 'clinic_number']
+     //   ],
+   // }).then((client) => {
+     //   console.log(parseInt(client.dataValues.clinic_number) + 1)
+       // if (client) {
+         //   return parseInt(client.dataValues.clinic_number) + 1
+       // } else {
+         //   return "0001"
+       // }
+   // })
 
-}
+//}
 
 module.exports = registerClient;
